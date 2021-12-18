@@ -60,4 +60,13 @@ class UserController extends Controller
             ];
         }
     }
+
+    // check if the user is logged in 
+    // make the stucture of json able to be updated when needed
+    public function checkAuth(Request $req)
+    {
+        return [
+            'auth' => auth()->check(),
+        ];
+    }
 }
