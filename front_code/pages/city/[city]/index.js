@@ -23,12 +23,14 @@ export default () => {
     const {city} = router.query
     const [data, setData] = useState()
 
-    useEffect(() => {
+    const fetchData = () => {
         if(city === undefined) return
 
         fetchApi({url: `/api/city/${city}/weather`})
         .then(res => setData(res.data) )
-    }, [city])
+    }
+
+    useEffect(fetchData, [city])
 
     if(city === undefined || data === undefined) return <LoadingPage />
 console.log(data);
@@ -48,6 +50,22 @@ console.log(data);
                     >
                         Copy Link
                     </button>
+                    <select 
+                        className="font-bold text-white bg-black/20 px-4 mx-4 rounded"
+                        onChange={e => {
+                            fetchApi({
+                                url: '/api/unit/change',
+                                data: {units: e.target.value}
+                            }).then(res => {
+                                if(res.data.status)
+                                    fetchData()
+                            })
+                        }}    
+                    >
+                        <option value="metric">Metric</option>
+                        <option value="imperial">Imperial</option>
+                        <option value="standard">Standard</option>
+                    </select>
                 </div>
                 <div className="flex-1 bg-gradient-to-b from-sky-200 to-yellow-100 flex flex-col items-center justify-center">
                     <div className="border shadow-md bg-white/50 rounded p-4">

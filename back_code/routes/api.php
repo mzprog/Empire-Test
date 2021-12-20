@@ -20,8 +20,10 @@ Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/checkauth', [UserController::class, 'checkAuth']);
 
-Route::get('/city/{city}/check', [WeatherController::class, 'checkCity']);
-Route::get('/city/{city}/weather', [WeatherController::class, 'weatherCity']);
+Route::middleware('auth:sanctum')->post('/unit/change', [UserController::class, 'changeUnits']);
+
+Route::middleware('auth:sanctum')->get('/city/{city}/check', [WeatherController::class, 'checkCity']);
+Route::middleware('auth:sanctum')->get('/city/{city}/weather', [WeatherController::class, 'weatherCity']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

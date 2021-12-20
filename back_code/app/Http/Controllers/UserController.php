@@ -63,6 +63,25 @@ class UserController extends Controller
         }
     }
 
+    public function changeUnits(Request $req)
+    {
+        $units = $req->units;
+        if (!in_array($units, ['metric', 'imperial', 'standard'])) {
+            return [
+                'status' => false,
+                'msg' => 'unknown unitss'
+            ];
+        }
+
+        $user = auth()->user;
+        $user->units = $units;
+        $user->save();
+
+        return [
+            'status' => true
+        ];
+    }
+
     // check if the user is logged in 
     // make the stucture of json able to be updated when needed
     public function checkAuth(Request $req)
