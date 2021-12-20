@@ -52,15 +52,23 @@ class WeatherController extends Controller
 
             return [
                 'status' => true,
+                'units' => $units,
                 'current' => [
                     'temp' => $weatherData->current->temp,
                     'title' => $weatherData->current->weather[0]->description,
-                    'icon' => $weatherData->current->weather[0]->icon
+                    'icon' => $this->IMG($weatherData->current->weather[0]->icon)
                 ],
                 'week' => array_map(function ($day) {
-                    $day->date = date('Y-m-d', $day->dt);
-                    return $day;
-                }, array_slice((array) $weatherData->daily, 1, 6))
+                    return [
+                        'date' => date('D, j M', $day->dt),
+                        'temp' => [
+                            'min' => $day->temp->min,
+                            'max' => $day->temp->max,
+                        ],
+                        'title' => $day->weather[0]->description,
+                        'icon' => $this->IMG($day->weather[0]->icon),
+                    ];
+                }, array_slice((array) $weatherData->daily, 0, 7))
             ];
         }
     }
@@ -88,5 +96,10 @@ class WeatherController extends Controller
     {
         $headers = get_headers($url);
         return substr($headers[0], 9, 3);
+    }
+
+    private function IMG($code)
+    {
+        return "http://openweathermap.org/img/w/${code}.png";
     }
 }
