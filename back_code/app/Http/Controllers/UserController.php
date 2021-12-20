@@ -25,6 +25,7 @@ class UserController extends Controller
             $credentials = $req->only('email', 'password');
             if (Auth::attempt($credentials)) {
                 $user = User::where('email', '=', $req->email)->first();
+                session('units', $user['units']);
                 auth()->login($user);
 
                 return [
@@ -55,6 +56,7 @@ class UserController extends Controller
         } else {
             $user = User::create(request(['name', 'email', 'password']));
             auth()->login($user);
+            session('units', '');
             return [
                 'status' => true,
             ];
