@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Favorite from "../Components/Favorite";
 import CitySearch from "../Components/Forms/CitySearch";
 import Logout from "../Components/Forms/Logout";
 import MainLayout from "../Components/Layouts/MainLayout";
@@ -19,6 +20,7 @@ export default function Home() {
                     <div className="container mx-auto">
                         <div className="text-center">
                             <CitySearch />
+                            <Favorite />
                         </div>
                         
                     </div>
