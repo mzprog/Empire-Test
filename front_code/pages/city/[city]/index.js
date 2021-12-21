@@ -55,6 +55,7 @@ console.log(data);
                         onChange={e => {
                             fetchApi({
                                 url: '/api/unit/change',
+                                method: 'post',
                                 data: {units: e.target.value}
                             }).then(res => {
                                 if(res.data.status)

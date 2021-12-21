@@ -25,7 +25,6 @@ class UserController extends Controller
             $credentials = $req->only('email', 'password');
             if (Auth::attempt($credentials)) {
                 $user = User::where('email', '=', $req->email)->first();
-                session('units', $user['units']);
                 auth()->login($user);
 
                 return [
@@ -56,7 +55,6 @@ class UserController extends Controller
         } else {
             $user = User::create(request(['name', 'email', 'password']));
             auth()->login($user);
-            session('units', '');
             return [
                 'status' => true,
             ];
@@ -69,7 +67,7 @@ class UserController extends Controller
         return ['status' => true];
     }
 
-    public function changeUnits(Request $req)
+    public function changeUnits(User $user, Request $req)
     {
         $units = $req->units;
         if (!in_array($units, ['metric', 'imperial', 'standard'])) {
@@ -79,12 +77,13 @@ class UserController extends Controller
             ];
         }
 
-        $user = auth()->user;
+        $user = User::findOrFail(Auth::id());
         $user->units = $units;
         $user->save();
 
         return [
-            'status' => true
+            'status' => true,
+            'user' => $user
         ];
     }
 

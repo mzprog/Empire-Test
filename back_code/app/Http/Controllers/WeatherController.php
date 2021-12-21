@@ -43,7 +43,8 @@ class WeatherController extends Controller
             //get data
             $lon = $data->coord->lon;
             $lat = $data->coord->lon;
-            $units = session('units') ?? 'metric';
+            $units = $request->user()->units;
+            if ($units == '') $units = 'metric';
 
             //url
             $url = $this->WeatherURL($lat, $lon, $units);
