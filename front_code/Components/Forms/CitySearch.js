@@ -51,7 +51,7 @@ export default () => {
                         onChange={() => status.found === false && setStatus({checking:false, found:undefined}) }
                         className="border border-gray-300 rounded-l-lg my-1 py-1 px-2 flex-1"
                     />
-                    <input type="submit" value="Login"
+                    <input type="submit" value="Search"
                         className="border-gray-300 rounded-r-lg my-1 py-1 px-2 bg-sky-400 text-white border-0 font-semibold hover:bg-sky-500"
                     />
                 </div>
