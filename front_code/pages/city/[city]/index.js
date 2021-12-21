@@ -50,7 +50,7 @@ console.log(data);
                     >
                         Copy Link
                     </button>
-                    <select 
+                    <select defaultValue={data.units}
                         className="font-bold text-white bg-black/20 px-4 mx-4 rounded"
                         onChange={e => {
                             fetchApi({
@@ -88,9 +88,9 @@ console.log(data);
                         </div>
                     </div>
 
-                    <div className="my-8 mx-auto px-4 flex flex-wrap justify-between">
+                    <div className="my-8 mx-auto px-4 grid lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-2 grid-cols-1">
                         <div
-                            className="border shadow-md bg-white/50 rounded p-4 m-2 w-44 flex flex-col"
+                            className="border shadow-md bg-white/50 rounded p-2 m-2 w-40 flex flex-col"
                         >
                             <div className="font-bold text-xl">
                                 Today
@@ -112,7 +112,7 @@ console.log(data);
                         {
                             data.week.slice(1,-1).map(day => (
                                 <div key={day.date}
-                                    className="border shadow-md bg-white/50 rounded p-4 m-2 w-44 flex flex-col"
+                                    className="border shadow-md bg-white/50 rounded p-2 m-2 w-40 flex flex-col"
                                 >
                                     <div className="font-bold text-xl">
                                         { day.date }
