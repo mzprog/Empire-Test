@@ -1,17 +1,22 @@
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router';
 import fetchApi from '../../Libs/fetchApi';
+import { useState } from 'react';
 
 export default () => {
     const {register, handleSubmit, formState: {errors}, reset} = useForm()
     const router = useRouter()
+    const [sysErrors, setSysErrors] = useState() 
 
     const onSubmitForm = values => {
         fetchApi({ url: '/sanctum/csrf-cookie' }).then(response => {
             fetchApi({
                 method: 'post', url: '/api/login',
                 data: values,
-            }).then(json => { if(json.data.status) router.push('/') })
+            }).then(json => { 
+                if(json.data.status) router.push('/')
+                else setSysErrors(json.data.message)
+            })
         })
     }
 
@@ -55,6 +60,13 @@ export default () => {
                         <div className='text-sm text-red-400'>
                             {errors?.pass?.message}
                         </div>
+                        {
+                            sysErrors !== undefined && (
+                                <div className='text-sm text-red-400'>
+                                    {sysErrors}
+                                </div>
+                            )
+                        }
                     </div>
                    
                     <div>
