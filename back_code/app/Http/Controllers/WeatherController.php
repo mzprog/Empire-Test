@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 
 class WeatherController extends Controller
@@ -51,9 +52,13 @@ class WeatherController extends Controller
             $weatherStr = file_get_contents($url);
             $weatherData = json_decode($weatherStr);
 
+            // favorite?
+            $favorite = Favorite::where('user_id', $request->user()->id)->where('name', $city)->first();
+
             return [
                 'status' => true,
                 'units' => $units,
+                'favorite' => $favorite !== null,
                 'current' => [
                     'temp' => $weatherData->current->temp,
                     'title' => $weatherData->current->weather[0]->description,
