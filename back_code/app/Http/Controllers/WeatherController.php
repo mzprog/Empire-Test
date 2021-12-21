@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class WeatherController extends Controller
 {
-    const BASE_URL = 'http://api.openweathermap.org/data/2.5/';
+    const BASE_URL = 'https://api.openweathermap.org/data/2.5/';
     const KEY = 'cbaa806e9f0c480c05762b8682f57226';
 
     public function checkCity(Request $request, $city)
@@ -100,6 +100,6 @@ class WeatherController extends Controller
 
     private function IMG($code)
     {
-        return "http://openweathermap.org/img/w/${code}.png";
+        return "https://openweathermap.org/img/w/${code}.png";
     }
 }
