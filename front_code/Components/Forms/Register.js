@@ -1,20 +1,23 @@
-import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form'
+import fetchApi from '../../Libs/fetchApi';
 
 export default () => {
-    const {register, handleSubmit, formState: {errors}, reset} = useForm()
+    const {register, handleSubmit, formState: {errors} } = useForm()
+    const [sysErrors, setSysErrors] = useState() 
+    const router = useRouter()
 
     const onSubmitForm = values => {
-        let config = {
-            method: 'post',
-            url: `http://localhost:8000/api/register`,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            data: values,
-        }
-        axios(config)
-        .then(json => console.log(json.data))
+        fetchApi({ url: '/sanctum/csrf-cookie' }).then(() => {
+            fetchApi({
+                method: 'post', url: '/api/register',
+                data: values,
+            }).then(json => { 
+                if(json.data.status) router.push('/')
+                else setSysErrors(json.data.errors)
+            })
+        })
     }
 
     return (
@@ -40,6 +43,13 @@ export default () => {
                         <div className='text-sm text-red-400'>
                             {errors?.name?.message}
                         </div>
+                        {
+                            sysErrors?.name?.map((err, key) => (
+                                <div className='text-sm text-red-400' key={key}>
+                                    {err}
+                                </div>
+                            ))
+                        }
                     </div>
                     <div>
                         <label htmlFor="reg_email" className="font-semibold block text-left p-1">
@@ -57,6 +67,13 @@ export default () => {
                         <div className='text-sm text-red-400'>
                             {errors?.email?.message}
                         </div>
+                        {
+                            sysErrors?.email?.map((err, key) => (
+                                <div className='text-sm text-red-400' key={key}>
+                                    {err}
+                                </div>
+                            ))
+                        }
                     </div>
                     <div>
                         <label htmlFor="reg_pass" className="font-semibold block text-left p-1">
@@ -76,8 +93,15 @@ export default () => {
                             className="border border-gray-300 rounded-lg my-1 py-1 px-2"
                         />
                         <div className='text-sm text-red-400'>
-                            {errors?.pass?.message}
+                            {errors?.password?.message}
                         </div>
+                        {
+                            sysErrors?.password?.map((err, key) => (
+                                <div className='text-sm text-red-400' key={key}>
+                                    {err}
+                                </div>
+                            ))
+                        }
                     </div>
                    
                     <div>
