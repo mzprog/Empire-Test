@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout']);
 Route::get('/checkauth', [UserController::class, 'checkAuth']);
 
 Route::middleware('auth:sanctum')->post('/unit/change', [UserController::class, 'changeUnits']);

@@ -63,6 +63,12 @@ class UserController extends Controller
         }
     }
 
+    public function logout()
+    {
+        auth()->logout();
+        return ['status' => true];
+    }
+
     public function changeUnits(Request $req)
     {
         $units = $req->units;
